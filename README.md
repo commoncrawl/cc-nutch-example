@@ -28,7 +28,7 @@ cd language-detection-cld2/
 mvn install
 cd ..
 
-git clone https://github.com/apache/nutch.git nutch-cc
+git clone https://github.com/commoncrawl/nutch.git nutch-cc
 cd nutch-cc/
 ant runtime
 cd ..
