@@ -4,6 +4,7 @@
 <configuration>
 
 <!-- need to fill your crawler contact information -->
+<property><name>http.agent.name</name><value></value></property>
 <property><name>http.robots.agents</name><value></value></property>
 <property><name>http.agent.description</name><value></value></property>
 <property><name>http.agent.url</name><value></value></property>
@@ -43,5 +44,10 @@
 <property><name>urlnormalizer.scope.generate</name><value>org.apache.nutch.net.urlnormalizer.pass.PassURLNormalizer</value></property>
 <!-- required even with generate -noNorm -->
 <property><name>urlnormalizer.scope.partition</name><value>org.apache.nutch.net.urlnormalizer.pass.PassURLNormalizer</value></property>
+
+<!-- scoring-opic -->
+<property><name>db.score.link.internal</name><value>.5</value></property><!-- discount on score passed to links -->
+<property><name>db.score.link.external</name><value>.3</value></property><!-- higher discount for external links -->
+
 
 </configuration>
