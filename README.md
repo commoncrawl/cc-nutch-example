@@ -1,15 +1,14 @@
 Example Usage of Common Crawl's Fork of Apache Nutch to Crawl and Write WARC files
 ==================================================================================
 
-A short description how to set up [Common Crawl's
-Fork](https://github.com/commoncrawl/nutch/) of [Apache
-Nutch](https://nutch.apache.org/) for crawling and to store the
+A short description how to set up [Common Crawl's Fork](https://github.com/commoncrawl/nutch/)
+of [Apache Nutch](https://nutch.apache.org/) for crawling and to store the
 crawled content in WARC files.
 
 
 # Requirements and installation
 
-- Linux (tested on Ubuntu 20.04)
+- Linux (tested on Ubuntu 22.04)
 - Java 11 (higher Java versions should also work)
 - [ant](https://ant.apache.org/) and [maven](https://maven.apache.org/)
 - [Compact Language Detector 2](https://github.com/CLD2Owners/cld2)
@@ -18,6 +17,7 @@ crawled content in WARC files.
 ```bash
 sudo apt install libcld2-0 libcld2-dev ant maven
 ```
+
 
 # Compile Nutch and required projects
 
@@ -49,7 +49,6 @@ Notes:
   in the file `conf/nutch-site.xml`
 - if the configuration is changed Nutch needs to be recompiled because
   configuration files are contained in the job file (`runtime/local/apache-nutch-*.job`)
-
 
 
 # Run crawl
