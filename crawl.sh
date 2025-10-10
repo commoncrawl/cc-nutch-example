@@ -65,8 +65,8 @@ function nutch() {
         echo "Generate returned 1 (no segment created / no more URLs to fetch)"
     else
         echo "Error running:"
-        echo "  nutch $@"
-        echo "Failed with exit value $RETCODE."
+        echo "  $NUTCH_HOME/bin/nutch $nutch_tool $@"
+        echo "Failed with exit value $RETCODE (there may be more details in ${NUTCH_LOG_DIR}/hadoop.log )"
         exit $RETCODE
     fi
 }
