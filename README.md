@@ -40,16 +40,27 @@ cd ..
 
 # Configuration
 
-Go to the project root folder `nutch-cc` and edit the files in the
-folder `conf/` esp. `conf/nutch-site.xml`.  But also the URL filter
-configuration files may require to be adapted to your use case.
+Edit the configuration file in the `conf/nutch-site.xml`:
+- It's required to configure at least the property `http.agent.name`
+  in the file `conf/nutch-site.xml`.
 
-Notes:
-- it's required to configure at least the property `http.agent.name`
-  in the file `conf/nutch-site.xml`
-- if the configuration is changed Nutch needs to be recompiled because
-  configuration files are contained in the job file (`runtime/local/apache-nutch-*.job`)
-
+Now there are two options:
+1. If it's ensured that the script `crawl.sh` is kept in this project's root folder,
+   continue with [Run crawl](#run-crawl). The configuration directory is added
+   in front of the Java classpath, and the `nutch-site.xml` is picked from the
+   first occurrence on the classpath.
+2. If you plan to move scripts around or need more configurations, e.g., adapt the URL filter
+   configuration files to your use case, then copy the file into `nutch-cc/conf/`:
+   ```
+   cp -p conf/nutch-site.xml nutch-cc/conf/
+   ```
+   After having done all configuration changes, Nutch needs to be recompiled because
+   configuration files are contained in the job file (`runtime/local/apache-nutch-*.job`):
+   ```
+   cd nutch-cc/
+   ant runtime
+   cd ..
+   ```
 
 # Run crawl
 
