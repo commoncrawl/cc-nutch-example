@@ -8,7 +8,7 @@ crawled content in WARC files.
 
 # Requirements and installation
 
-- Linux (tested on Ubuntu 22.04)
+- Linux (tested on Ubuntu 24.04)
 - Java 11 (higher Java versions should also work)
 - [ant](https://ant.apache.org/) and [maven](https://maven.apache.org/)
 - [Compact Language Detector 2](https://github.com/CLD2Owners/cld2)
