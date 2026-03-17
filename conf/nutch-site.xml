@@ -4,50 +4,331 @@
 <configuration>
 
 <!-- need to fill your crawler contact information -->
-<property><name>http.agent.name</name><value></value></property>
-<property><name>http.robots.agents</name><value></value></property>
-<property><name>http.agent.description</name><value></value></property>
-<property><name>http.agent.url</name><value></value></property>
-<property><name>http.agent.version</name><value></value></property>
+<property>
+  <name>http.agent.name</name>
+  <value></value>
+  <description>'User-Agent' name: a single word uniquely identifying your crawler.
+
+  The value is used to select the group of robots.txt rules addressing your
+  crawler. It is also sent as part of the HTTP 'User-Agent' request header.
+
+  This property MUST NOT be empty -
+  please set this to a single word uniquely related to your organization.
+
+  Following RFC 9309 the 'User-Agent' name (aka. 'product token')
+  &quot;MUST contain only uppercase and lowercase letters ('a-z' and
+  'A-Z'), underscores ('_'), and hyphens ('-').&quot;
+
+  NOTE: You should also check other related properties:
+
+    http.robots.agents
+    http.agent.description
+    http.agent.url
+    http.agent.email
+    http.agent.version
+
+  and set their values appropriately.
+  </description>
+</property>
+<property>
+  <name>http.robots.agents</name>
+  <value></value>
+  <description>Any other agents, apart from 'http.agent.name', that the robots
+  parser would look for in robots.txt. Multiple agents can be provided using
+  comma as a delimiter. eg. mybot,foo-spider,bar-crawler
+
+  The ordering of agents does NOT matter and the robots.txt parser combines
+  all rules to any of the agent names.  Also, there is NO need to add
+  a wildcard (ie. "*") to this string as the robots parser would smartly
+  take care of a no-match situation.
+
+  If no value is specified, by default HTTP agent (ie. 'http.agent.name')
+  is used for user-agent matching by the robots parser.
+  </description>
+</property>
+<property>
+  <name>http.agent.description</name>
+  <value></value>
+  <description>Further description of our bot- this text is used in
+  the User-Agent header.  It appears in parenthesis after the agent name.
+  </description>
+</property>
+<property>
+  <name>http.agent.url</name>
+  <value></value>
+  <description>A URL to advertise in the User-Agent header. This will
+   appear in parenthesis after the agent name. Custom dictates that this
+   should be a URL to a page that explains the purpose and behavior of this
+   crawler.
+  </description>
+</property>
+<property>
+  <name>http.agent.email</name>
+  <value></value>
+  <description>An email address to advertise in the HTTP 'User-Agent' (and
+   'From') request headers. A good practice is to mangle this address
+   (e.g. 'info at example dot com') to avoid spamming.
+  </description>
+</property>
+<property>
+  <name>http.agent.version</name>
+  <value></value>
+  <description>A version string to advertise in the User-Agent
+   header.</description>
+</property>
 
 <!-- active plugins -->
-<property><name>plugin.includes</name><value>protocol-okhttp|urlfilter-(prefix|fast|regex|suffix)|parse-(html|tika)|scoring-opic|urlnormalizer-(regex|basic)</value></property>
+<property>
+  <name>plugin.includes</name>
+  <value>protocol-okhttp|urlfilter-(prefix|fast|regex|suffix)|parse-(html|tika)|scoring-opic|urlnormalizer-(regex|basic)</value>
+  <description>Regular expression naming plugin directory names to
+  include.  Any plugin not matching this expression is excluded.
+  By default Nutch includes plugins to crawl HTML and various other
+  document formats via HTTP/HTTPS and indexing the crawled content
+  into Solr.  More plugins are available to support more indexing
+  backends, to fetch ftp:// and file:// URLs, for focused crawling,
+  and many other use cases.
+  </description>
+</property>
 
 <!-- HTTP protocol and fetcher properties -->
-<property><name>fetcher.server.delay</name><value>6.0</value></property>
-<property><name>fetcher.max.crawl.delay</name><value>120</value></property>
+<property>
+  <name>fetcher.server.delay</name>
+  <value>6.0</value>
+  <description>The number of seconds the fetcher will delay between
+   successive requests to the same server. Note that this might get
+   overridden by a Crawl-Delay from a robots.txt and is used ONLY if
+   fetcher.threads.per.queue is set to 1.
+   </description>
+</property>
+<property>
+ <name>fetcher.max.crawl.delay</name>
+ <value>120</value>
+ <description>
+ If the Crawl-Delay in robots.txt is set to greater than this value (in
+ seconds) then the fetcher will skip this page, generating an error report.
+ If set to -1 the fetcher will never skip such pages and will wait the
+ amount of time retrieved from robots.txt Crawl-Delay, however long that
+ might be.
+ </description>
+</property>
 
-<property><name>http.content.limit</name><value>1048576</value></property>
-<property><name>http.store.responsetime</name><value>true</value></property>
-<property><name>store.ip.address</name><value>true</value></property>
-<property><name>store.http.request</name><value>true</value></property>
-<property><name>store.http.headers</name><value>true</value></property>
-<property><name>http.accept.language</name><value>en-US,en;q=0.5</value></property>
-<property><name>http.accept.charset</name><value> </value></property>
-<property><name>http.time.limit</name><value>120</value></property>
-<property><name>http.timeout</name><value>30000</value></property>
-<property><name>http.redirect.max</name><value>3</value></property>
-<property><name>http.redirect.max.skip</name><value>false</value></property>
-<property><name>http.partial.truncated</name><value>true</value></property>
+<property>
+  <name>http.content.limit</name>
+  <value>1048576</value>
+  <description>The length limit for downloaded content using the http/https
+  protocols, in bytes. If this value is non-negative (>=0), content longer
+  than it will be truncated; otherwise, no truncation at all. Do not
+  confuse this setting with the file.content.limit setting.
+  </description>
+</property>
+<property>
+  <name>http.store.responsetime</name>
+  <value>true</value>
+  <description>Enables us to record the response time of the
+  host which is the time period between start connection to end
+  connection of a pages host. The response time in milliseconds
+  is stored in CrawlDb in CrawlDatum's meta data under key &quot;_rs_&quot;
+  </description>
+</property>
+<property>
+  <name>store.ip.address</name>
+  <value>true</value>
+  <description>Enables us to capture the specific IP address
+  (InetSocketAddress) of the host which we connect to via the given
+  protocol. Currently supported by: protocol-ftp, protocol-http,
+  protocol-okhttp, protocol-htmlunit, protocol-selenium.  Note that
+  the IP address is required by the plugin index-geoip and when
+  writing WARC files.
+  </description>
+</property>
+<property>
+  <name>store.http.request</name>
+  <value>true</value>
+  <description>
+    Store the HTTP request headers sent by Nutch. Useful for debugging and
+    required when writing WARC files.
+  </description>
+</property>
+<property>
+  <name>store.http.headers</name>
+  <value>true</value>
+  <description>
+    Store the HTTP response headers received by Nutch from the
+    server. Useful for debugging and required when writing WARC files.
+  </description>
+</property>
+<property>
+  <name>http.accept.language</name>
+  <value>en-US,en;q=0.5</value>
+  <description>Value of the "Accept-Language" request header field.
+  This allows selecting non-English language as default one to retrieve.
+  It is a useful setting for search engines build for certain national group.
+  To send requests without "Accept-Language" header field, this property must
+  be configured to contain a space character because an empty property does
+  not overwrite the default.
+  </description>
+</property>
+<property>
+  <name>http.accept.charset</name>
+  <value> </value>
+  <description>Value of the "Accept-Charset" request header field. A space character
+  as value will cause that no "Accept-Charset" header field is sent in the request.
+  </description>
+</property>
+<property>
+  <name>http.time.limit</name>
+  <value>120</value>
+  <description>The time limit in seconds to fetch a single document.
+  If this value is non-negative (>=0), the HTTP protocol implementation
+  will stop reading from a socket after http.time.limit seconds have
+  been spent for fetching this document.  The HTTP response is then
+  marked as truncated.  The http.time.limit should be set to a longer
+  time period than http.timeout, as it applies to the entire duration
+  to fetch a document, not only the network timeout of a single I/O
+  operation.  Note: supported only by protocol-okhttp.
+  </description>
+</property>
+<property>
+  <name>http.timeout</name>
+  <value>30000</value>
+  <description>The default network timeout, in milliseconds.</description>
+</property>
+<property>
+  <name>http.redirect.max</name>
+  <value>3</value>
+  <description>The maximum number of redirects the fetcher will follow when
+  trying to fetch a page. If set to negative or 0, fetcher won't immediately
+  follow redirected URLs, instead it will record them for later fetching.
+  </description>
+</property>
+<property>
+  <name>http.redirect.max.exceeded.skip</name>
+  <value>false</value>
+  <description>
+    Whether to skip the last URL in a redirect chain when when redirects
+    are followed (http.redirect.max > 0) and the maximum number of redirects
+    in a chain is exceeded (redirect_count > http.redirect.max).
+    If not skipped the redirect target URLs are stored as `linked`
+    and fetched in one of the following cycles. See also NUTCH-2748.
+  </description>
+</property>
+<property>
+  <name>http.partial.truncated</name>
+  <value>true</value>
+  <description>
+    If true the HTTP protocol implementation may store the content of
+    partial fetches and mark the response as truncated instead of
+    throwing an exception which will cause the fetch to fail.  This
+    allows to use the data which has already been fetched, instead of
+    retrying the fetch later.  Note: supported only by protocol-okhttp.
+  </description>
+</property>
 
-<property><name>fetcher.store.content</name><value>false</value></property>
-<property><name>fetcher.store.robotstxt</name><value>true</value></property>
-<property><name>fetcher.store.404s</name><value>true</value></property>
-<property><name>fetcher.signature</name><value>true</value></property>
-<property><name>fetcher.redirect.dedupcache.seconds</name><value>3600</value></property>
-<property><name>fetcher.redirect.dedupcache.size</name><value>1000</value></property>
+<property>
+  <name>fetcher.store.content</name>
+  <value>false</value>
+  <description>If true, fetcher will store content.</description>
+</property>
+<property>
+  <name>fetcher.store.404s</name>
+  <value>true</value>
+  <description>If true, fetcher will also store the content of 404s and other
+  non-successful responses for debugging or archival purposes.</description>
+</property>
+<property>
+  <name>fetcher.store.warc</name>
+  <value>true</value>
+  <description>If true, fetcher will write WARC files.
+  </description>
+</property>
+<property>
+  <name>fetcher.store.robotstxt</name>
+  <value>true</value>
+  <description>If true (and fetcher.store.content or
+  fetcher.store.warc are true), fetcher will store the robots.txt
+  response content and status for debugging or archival purposes. The
+  robots.txt is added to the content/ folder of the fetched segment
+  and/or the WARC files.
+  </description>
+</property>
+<property>
+  <name>fetcher.signature</name>
+  <value>true</value>
+  <description>If true, fetcher will generate the signature for
+  successfully fetched documents even if the content is not parsed by
+  fetcher (see property fetcher.parse).  Default is false, which means
+  that the signature is calculated when parsing either by the fetcher
+  or during the parsing step.  Note that a non-parsing fetcher can
+  only generate signatures based on the binary content and not on the
+  textual content. An appropriate signature class should be chosen
+  (see property db.signature.class).
+  </description>
+</property>
+<property>
+  <name>fetcher.redirect.dedupcache.seconds</name>
+  <value>3600</value>
+  <description>
+    The maximum time in seconds fetcher will cache redirects for
+    deduplication.  If the same redirect URL is seen again withing
+    this time it is skipped. This allows to avoid pathological cases
+    where many or most of the URLs of a host are redirected to the
+    same URL, eg. a page to login, accept cookies, indicating an
+    error.  A value less or equal zero disables redirect deduplication.
+    Caveat: This may break setting cookies via recursive redirect chains.
+  </description>
+</property>
+<property>
+  <name>fetcher.redirect.dedupcache.size</name>
+  <value>1000</value>
+  <description>
+    The maximum size of the cache to deduplicate redirects,
+    see `fetcher.redirect.dedupcache.seconds`.
+  </description>
+</property>
 
 <!-- URL normalizer properties -->
-<property><name>urlnormalizer.basic.host.idn</name><value>toAscii</value></property>
-<property><name>urlnormalizer.basic.host.trim-trailing-dot</name><value>true</value></property>
-<!-- not necessary because generate -noNorm -->
+<property>
+  <name>urlnormalizer.basic.host.idn</name>
+  <value>toAscii</value>
+  <description>Let urlnormalizer-basic
+  (org.apache.nutch.net.urlnormalizer.basic.BasicURLNormalizer)
+  normalize Internationalized Domain Names (IDNs). Possible values
+  are: `toAscii` - convert the Unicode form to the ASCII (Punycode)
+  representation, `toUnicode` - convert ASCII (Punycode) to Unicode,
+  or if left empty no normalization of IDNs is performed.
+  </description>
+</property>
+<property>
+  <name>urlnormalizer.basic.host.trim-trailing-dot</name>
+  <value>true</value>
+  <description>urlnormalizer-basic: Trim a trailing dot in host names:
+  `https://example.org./` is normalized to `https://example.org/`.
+  </description>
+</property>
+<!-- URL normalizers for specific tools -->
+<!-- (Not mandatory if generate is used with -noNorm) -->
 <property><name>urlnormalizer.scope.generate</name><value>org.apache.nutch.net.urlnormalizer.pass.PassURLNormalizer</value></property>
-<!-- required even with generate -noNorm -->
+<!-- Required even with generate -noNorm -->
 <property><name>urlnormalizer.scope.partition</name><value>org.apache.nutch.net.urlnormalizer.pass.PassURLNormalizer</value></property>
 
-<!-- scoring-opic -->
-<property><name>db.score.link.internal</name><value>.5</value></property><!-- discount on score passed to links -->
-<property><name>db.score.link.external</name><value>.3</value></property><!-- higher discount for external links -->
-
+<!-- Configuration of scoring-opic: discounts on scores passed to linked pages. -->
+<property>
+  <name>db.score.link.external</name>
+  <value>.5</value>
+  <description>The score factor for new pages added due to a link from
+  another host relative to the referencing page's score. Scoring plugins
+  may use this value to affect initial scores of external links.
+  </description>
+</property>
+<!-- higher discount (lower factor) for external links -->
+<property>
+  <name>db.score.link.external</name>
+  <value>.3</value>
+  <description>The score factor for new pages added due to a link from
+  another host relative to the referencing page's score. Scoring plugins
+  may use this value to affect initial scores of external links.
+  </description>
+</property>
 
 </configuration>
